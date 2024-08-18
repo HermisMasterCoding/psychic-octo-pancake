@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Puntajes</title>
+    <link rel="icon" type="image/x-icon" href="Logo del colegio.ico(1).ico"> <!-- Agregar favicon -->
+    <style>
+        /* Background Animation */
+        @keyframes backgroundAnimation {
+            0% { background-position: 0% 0%; }
+            50% { background-position: 100% 100%; }
+            100% { background-position: 0% 0%; }
+        }
+
+        /* Light Background Animation */
+        @keyframes lightAnimation {
+            0% { opacity: 0.4; }
+            50% { opacity: 0.9; } /* Increased opacity */
+            100% { opacity: 0.4; }
+        }
+
+        /* Neon Glow Effect */
+        @keyframes neonGlow {
+            0% {
+                text-shadow: 0 0 4px #ffffffab, 0 0 7px #d4d1d1, 0 0 10px #fff; /* Reduced glow */
+            }
+            50% {
+                text-shadow: 0 0 6px #fff, 0 0 10px #fff, 0 0 14px #d8d8d8; /* Reduced glow */
+            }
+            100% {
+                text-shadow: 0 0 4px #fff, 0 0 8px #d4d4d4, 0 0 12px #d8d8d8; /* Reduced glow */
+            }
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background: linear-gradient(to bottom, #1c1c1c, #2a2a2a 50%, #333333);
+            background-size: 400% 400%;
+            background: linear-gradient(#1d1d1dea, #070707);
+            animation: backgroundAnimation 20s ease infinite;
+            color: #f0f0f0;
+        }
+
+        .container {
+            max-width: 90%;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #2e2e2e;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+            animation: fade-in 2s;
+        }
+
+        .container::before {
+            content: "";
+            position: absolute;
+            top: -20px;
+            left: -20px;
+            width: calc(100% + 40px);
+            height: calc(100% + 40px);
+            border-radius: 15px;
+            background: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.8);
+            animation: lightAnimation 2s ease-in-out infinite;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+            font-size: 1.5rem; /* Adjusted for responsiveness */
+            font-weight: 600;
+            color: #fff;
+            animation: neonGlow 1.5s ease-in-out infinite;
+            text-shadow: 0 0 3px #fff, 0 0 6px #fff, 0 0 9px #fff; /* Reduced glow */
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            border-radius: 8px; /* Rounded corners */
+            overflow: hidden; /* Hide overflow to match rounded corners */
+            position: relative;
+            z-index: 1;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.5); /* Light effect always on */
+            transition: box-shadow 0.3s ease;
+        }
+
+        th, td {
+            border: 1px solid #333;
+            padding: 12px;
+            text-align: center;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        th {
+            background-color: #3c3c3c;
+            color: #f0f0f0;
+            font-weight: 700;
+        }
+
+        td {
+            background-color: #1e1e1e;
+            color: #f0f0f0;
+        }
+
+        tr:nth-child(even) td {
+            background-color: #1e1e1e;
+        }
+
+        tr:hover, tr:active {
+            background-color: #333;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.7); /* Increased brightness on hover and click */
+        }
+
+        table:hover {
+            box-shadow: 0 0 30px rgba(255, 255, 255, 0.9); /* Brighter light effect on hover */
+        }
+
+        /* Animation for container */
+        @keyframes fade-in {
+            0% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+
+            h1 {
+                font-size: 1.25rem;
+            }
+
+            th, td {
+                padding: 8px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1rem;
+            }
+
+            th, td {
+                padding: 6px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Puntajes</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Puntaje</th>
+                </tr>
+            </thead>
+            <tbody id="puntajes-table">
+                <!-- table rows will be generated dynamically -->
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        const puntajesTable = document.getElementById('puntajes-table');
+
+        // List of names
+        const names = ["Hermes", "Pablo", "Juan", "Luis", "Bernard", "Emilio", "Andrew", "Efraín", "Oscar", "Diego"];
+
+        // Generate random scores for each name
+        const scores = names.map(name => ({
+            name: name,
+            score: Math.floor(Math.random() * (100 - 50 + 1)) + 50
+        }));
+
+        // Sort scores from highest to lowest
+        scores.sort((a, b) => b.score - a.score);
+
+        // Create table rows dynamically
+        scores.forEach((score) => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${score.name}</td>
+                <td>${score.score}</td>
+            `;
+            puntajesTable.appendChild(row);
+        });
+    </script>
+</body>
+</html>
